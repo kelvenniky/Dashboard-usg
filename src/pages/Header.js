@@ -40,21 +40,14 @@ function Header() {
     setTextColor(color.hex); // Update text color from SketchPicker
   };
 
-  const toggleBold = () => {
-    setIsBold((prev) => !prev);
-  };
-
-  const toggleItalic = () => {
-    setIsItalic((prev) => !prev);
-  };
-
-  const toggleUnderline = () => {
-    setIsUnderline((prev) => !prev);
-  };
+  const toggleBold = () => setIsBold((prev) => !prev);
+  const toggleItalic = () => setIsItalic((prev) => !prev);
+  const toggleUnderline = () => setIsUnderline((prev) => !prev);
 
   const handleEdit = (field, currentText) => {
     setEditingField(field);
     setNewText(currentText);
+    setActive(null); // Hide newInput when editing
   };
 
   const handleSave = () => {
@@ -95,13 +88,13 @@ function Header() {
   };
 
   const handleAddText = () => {
-    setActive("add");
     if (newInputText.trim()) {
       setAdditionalTexts((prev) => [
         { text: newInputText, editable: false },
         ...prev,
       ]);
       setNewInputText("");
+      setActive(null); // Hide new input after adding
     }
   };
 
@@ -120,166 +113,65 @@ function Header() {
 
   return (
     <div className="flex-grow my-2 mx-4">
-      <div className="bg-white flex-col mb-2 flex-grow shadow-sm shadow-slate-300 h-20 border border-black">
+      <div className="bg-white flex-col mb-2 flex-grow shadow-sm shadow-slate-300 h-24 border border-black">
         <div className="flex flex-row ml-5 gap-20 mt-5">
-          <div
-            onClick={() => handleEdit("memberAccountName", memberAccountName)}
-            className="flex flex-row gap-3 cursor-pointer"
-          >
-            <CiSquareAlert className="mt-1" />
-            <p>{memberAccountName}</p>
-          </div>
-          <div
-            onClick={() => handleEdit("memberId", memberId)}
-            className="flex flex-row gap-3 cursor-pointer"
-          >
-            <CiSquareAlert className="mt-1" />
-            <p>{memberId}</p>
-          </div>
-          <div
-            onClick={() => handleEdit("memberCategory", memberCategory)}
-            className="flex flex-row gap-3 cursor-pointer"
-          >
-            <CiSquareAlert className="mt-1" />
-            <p>{memberCategory}</p>
-          </div>
-          <div
-            onClick={() => handleEdit("receiptCode", receiptCode)}
-            className="flex flex-row gap-3 cursor-pointer"
-          >
-            <CiSquareAlert className="mt-1" />
-            <p>{receiptCode}</p>
-          </div>
+          {[
+            { label: memberAccountName, field: "memberAccountName" },
+            { label: memberId, field: "memberId" },
+            { label: memberCategory, field: "memberCategory" },
+            { label: receiptCode, field: "receiptCode" },
+          ].map(({ label, field }) => (
+            <div
+              key={field}
+              onClick={() => handleEdit(field, label)}
+              className="flex flex-row gap-3 cursor-pointer"
+            >
+              <CiSquareAlert className="mt-1" />
+              <p>{label}</p>
+            </div>
+          ))}
           <div
             className="bg-black flex items-center justify-center rounded-sm p-2"
-            onClick={handleAddText}
+            onClick={() => setActive("add")}
           >
             <FaPlus color="white" />
           </div>
         </div>
+
+        <div className="ml-5 ">
         {additionalTexts.length > 0 && (
-          <div className="ml-5 mt-2">
+          <div className=" flex items-center gap-20 mt-2">
             {additionalTexts.map((item, index) => (
-              <div key={index} style={inputTextStyle}>
+              <div className="flex items-center gap-3" key={index} >
                 <CiSquareAlert className="mt-1 inline-block" />
                 <input
                   type="text"
                   value={item.text}
+                  style={inputTextStyle}
+                
                   onChange={(e) =>
                     handleAdditionalTextEdit(index, e.target.value)
-                    
                   }
-                  style={{
-                    ...inputTextStyle,
-                    border: "none",
-                    outline: "none",
-                    background: "transparent",
-                  }}
-                  
+                 
                 />
               </div>
             ))}
           </div>
         )}
-       
-      </div>
-      {active === "add" ? 
-          <div className="border bg-white border-black flex-grow">
-          <div className="border border-black flex mx-20 my-7 justify-between">
-            <div className="ml-5 gap-20 my-5 pr-7">
-              {editingField && (
-                <div className="flex flex-row gap-10">
-                  <div>
-                    <input
-                      type="text"
-                      value={newInputText}
-                      onChange={(e) => setNewInputText(e.target.value)}
-                      style={inputTextStyle}
-                      className="py-5 px-20 text-xl bg-gray-100 outline-none"
-                    />
-                    <div className="mt-1 flex gap-4 ml-1">
-                      <button onClick={toggleBold} className="text-2xl font-light">
-                        B
-                      </button>
-                      <button onClick={toggleItalic} className="text-2xl font-light">
-                        I
-                      </button>
-                      <button onClick={toggleUnderline} className="text-2xl font-light underline">
-                        U
-                      </button>
-                      <button onClick={toggleItalic} className="text-2xl font-light">
-                        <PiTextAlignLeftLight />
-                      </button>
-                    </div>
-  
-                    <div className="mt-10">
-                      <input
-                        type="text"
-                        placeholder="YTUI"
-                        className="py-4 border border-black px-20 text-xl bg-gray-100 outline-none"
-                      />
-                    </div>
-  
-                    <div className="mt-28 flex gap-1">
-                      <button className="px-3 py-2 rounded-sm bg-slate-300">
-                        Reset
-                      </button>
-                      <button
-                        className="px-3 py-2 rounded-sm text-white bg-blue-500 hover:bg-blue-700"
-                        onClick={handleSave}
-                      >
-                        Save
-                      </button>
-                      <button className="px-3 py-2 rounded-sm flex items-center gap-1 text-white bg-red-600">
-                        Delete
-                        <RiDeleteBin6Line color="white" />
-                      </button>
-                    </div>
-                  </div>
-  
-                  <div>
-                    <select
-                      id="sort"
-                      value={sortOption}
-                      className="bg-slate-200 py-3 px-3 outline-none border border-black"
-                    >
-                      <option value="date">Text Input</option>
-                      <option value="name">Alphabetical Order</option>
-                      <option value="time">Time</option>
-                      <option value="LocationID">LocationID</option>
-                    </select>
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="flex flex-col p-4 border-l border-black">
-              <div className="flex-grow items-center mb-2">
-                <button className="px-8 py-2 rounded-sm border border-gray-100">
-                  Label
-                </button>
-                <button className="px-8 py-2 bg-slate-200 border border-gray-100">
-                  Inputs
-                </button>
-              </div>
-              <SketchPicker
-                color={textColor}
-                onChangeComplete={handleColorChange}
-                className="mb-4"
-              />
-            </div>
-          </div>
         </div>
-        :
-        <div className="border bg-white border-black flex-grow">
+      </div>
+
+      <div className="border bg-white border-black flex-grow">
         <div className="border border-black flex mx-20 my-7 justify-between">
           <div className="ml-5 gap-20 my-5 pr-7">
-            {editingField && (
+            {active === "add" ? (
               <div className="flex flex-row gap-10">
                 <div>
                   <input
                     type="text"
-                    value={newText}
-                    onChange={(e) => setNewText(e.target.value)}
+                    value={newInputText}
+                    onChange={(e) => setNewInputText(e.target.value)}
+                    placeholder="Add new Text"
                     style={inputTextStyle}
                     className="py-5 px-20 text-xl bg-gray-100 outline-none"
                   />
@@ -298,27 +190,23 @@ function Header() {
                     </button>
                   </div>
 
+
                   <div className="mt-10">
-                    <input
-                      type="text"
-                      placeholder="YTUI"
-                      className="py-4 border border-black px-20 text-xl bg-gray-100 outline-none"
-                    />
-                  </div>
+                <input
+                  type="text"
+                  placeholder="YTUI"
+                  className="py-4 border border-black px-20 text-xl bg-gray-100 outline-none"
+                />
+              </div>
+
+
 
                   <div className="mt-28 flex gap-1">
-                    <button className="px-3 py-2 rounded-sm bg-slate-300">
+                    <button className="px-3 py-2 rounded-sm bg-slate-300" onClick={() => setNewInputText("")}>
                       Reset
                     </button>
-                    <button
-                      className="px-3 py-2 rounded-sm text-white bg-blue-500 hover:bg-blue-700"
-                      onClick={handleSave}
-                    >
-                      Save
-                    </button>
-                    <button className="px-3 py-2 rounded-sm flex items-center gap-1 text-white bg-red-600">
-                      Delete
-                      <RiDeleteBin6Line color="white" />
+                    <button className="px-3 py-2 rounded-sm text-white bg-blue-500 hover:bg-blue-700" onClick={handleAddText}>
+                      Add
                     </button>
                   </div>
                 </div>
@@ -327,25 +215,85 @@ function Header() {
                   <select
                     id="sort"
                     value={sortOption}
+                    onChange={(e) => setSortOption(e.target.value)}
                     className="bg-slate-200 py-3 px-3 outline-none border border-black"
                   >
                     <option value="date">Text Input</option>
-                    <option value="name">Alphabetical Order</option>
-                    <option value="time">Time</option>
-                    <option value="LocationID">LocationID</option>
+                    <option value="name">List Box</option>
+                    <option value="time">Table</option>
+                    <option value="LocationID">Desc Box</option>
                   </select>
                 </div>
               </div>
+            ) : (
+              editingField && (
+                <div className="flex flex-row gap-10">
+                  <div>
+                    <input
+                      type="text"
+                      value={newText}
+                      onChange={(e) => setNewText(e.target.value)}
+                      style={inputTextStyle}
+                      className="py-5 px-20 text-xl bg-gray-100 outline-none"
+                    />
+                    <div className="mt-1 flex gap-4 ml-1">
+                      <button onClick={toggleBold} className="text-2xl font-light">
+                        B
+                      </button>
+                      <button onClick={toggleItalic} className="text-2xl font-light">
+                        I
+                      </button>
+                      <button onClick={toggleUnderline} className="text-2xl font-light underline">
+                        U
+                      </button>
+                      <button onClick={toggleItalic} className="text-2xl font-light">
+                        <PiTextAlignLeftLight />
+                      </button>
+                    </div>
+
+                    <div className="mt-10">
+                <input
+                  type="text"
+                  placeholder="YTUI"
+                  className="py-4 border border-black px-20 text-xl bg-gray-100 outline-none"
+                />
+              </div>
+
+                    <div className="mt-28 flex gap-1">
+                      <button className="px-3 py-2 rounded-sm bg-slate-300" onClick={() => setNewText("")}>
+                        Reset
+                      </button>
+                      <button className="px-3 py-2 rounded-sm text-white bg-blue-500 hover:bg-blue-700" onClick={handleSave}>
+                        Save
+                      </button>
+                      <button className="px-3 py-2 rounded-sm flex items-center gap-1 text-white bg-red-600">
+                        Delete
+                        <RiDeleteBin6Line color="white" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <select
+                      id="sort"
+                      value={sortOption}
+                      onChange={(e) => setSortOption(e.target.value)}
+                      className="bg-slate-200 py-3 px-3 outline-none border border-black"
+                    >
+                      <option value="date">Text Input</option>
+                      <option value="name">Alphabetical Order</option>
+                      <option value="time">Time</option>
+                      <option value="LocationID">LocationID</option>
+                    </select>
+                  </div>
+                </div>
+              )
             )}
           </div>
           <div className="flex flex-col p-4 border-l border-black">
             <div className="flex-grow items-center mb-2">
-              <button className="px-8 py-2 rounded-sm border border-gray-100">
-                Label
-              </button>
-              <button className="px-8 py-2 bg-slate-200 border border-gray-100">
-                Inputs
-              </button>
+              <button className="px-8 py-2 rounded-sm border border-gray-100">Label</button>
+              <button className="px-8 py-2 bg-slate-200 border border-gray-100">Inputs</button>
             </div>
             <SketchPicker
               color={textColor}
@@ -355,15 +303,6 @@ function Header() {
           </div>
         </div>
       </div>
-        
-        
-        
-        }
-
-
-
-
-      
     </div>
   );
 }
