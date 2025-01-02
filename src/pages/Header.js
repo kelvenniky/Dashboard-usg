@@ -110,11 +110,12 @@ function Header() {
     fontStyle: isItalic ? "italic" : "normal",
     textDecoration: isUnderline ? "underline" : "normal",
   };
+  
 
   return (
-    <div className="flex-grow my-2 mx-4">
-      <div className="bg-white flex-col mb-2 flex-grow shadow-sm shadow-slate-300 h-24 border border-black">
-        <div className="flex flex-row ml-5 gap-20 mt-5">
+    <div className="flex-grow my-2 mx-2">
+      <div className="bg-white flex-col mb-2 flex-grow shadow-sm shadow-slate-300 px-2 py-2 border border-black">
+        <div className="flex flex-row  gap-20  gap-y-2  flex-wrap ">
           {[
             { label: memberAccountName, field: "memberAccountName" },
             { label: memberId, field: "memberId" },
@@ -138,9 +139,9 @@ function Header() {
           </div>
         </div>
 
-        <div className="ml-5 ">
+        <div className="flex-wrap gap-3 ">
         {additionalTexts.length > 0 && (
-          <div className=" flex items-center gap-20 mt-2">
+          <div className=" flex flex-wrap gap-3  items-center  ">
             {additionalTexts.map((item, index) => (
               <div className="flex items-center gap-3" key={index} >
                 <CiSquareAlert className="mt-1 inline-block" />
@@ -148,7 +149,7 @@ function Header() {
                   type="text"
                   value={item.text}
                   style={inputTextStyle}
-                
+                className=""
                   onChange={(e) =>
                     handleAdditionalTextEdit(index, e.target.value)
                   }

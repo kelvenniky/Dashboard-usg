@@ -4,6 +4,7 @@ import Header from "./pages/Header";
 import PersonalDetails from "./pages/PersonalDetails";
 import Table from "./pages/Table";
 
+
 function App() {
   return (
     <div className="bg-gray-200 flex flex-row h-screen">
