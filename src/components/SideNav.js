@@ -50,7 +50,7 @@ function SideNav() {
   };
 
   return (
-    <div className="flex flex-col h-screen w-1/5 bg-white shadow-md shadow-slate-500">
+    <aside className="bg-white min-h-full w-full max-w-60 customShadow" >
       <div className=" flex justify-center mt-10 border-b-2 border-slate-200 " >
         <p className="text-4xl font-semibold pb-2">X.100</p>
       </div>
@@ -113,7 +113,7 @@ function SideNav() {
           </div>
         </div>
 
-    </div>
+    </aside>
   );
 }
 

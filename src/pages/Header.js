@@ -114,7 +114,7 @@ function Header() {
 
   return (
     <div className="flex-grow my-2 mx-2">
-      <div className="bg-white flex-col mb-2 flex-grow shadow-sm shadow-slate-300 px-2 py-2 border border-black">
+      <div className="bg-white flex-col mb-2 flex-grow shadow-sm shadow-slate-300 px-2 py-4 border border-black">
         <div className="flex flex-row  gap-20  gap-y-2  flex-wrap ">
           {[
             { label: memberAccountName, field: "memberAccountName" },

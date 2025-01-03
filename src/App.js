@@ -7,7 +7,7 @@ import Table from "./pages/Table";
 
 function App() {
   return (
-    <div className="bg-gray-200 flex flex-row h-screen">
+    <div className="bg-gray-200 flex flex-row h-screen ">
       <SideNav/>
       <Routes>
         <Route path="/" element={<Header/>}/>

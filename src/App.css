@@ -36,3 +36,22 @@
     transform: rotate(360deg);
   }
 }
+
+
+.overflow-x-auto {
+  overflow-x: auto; /* Enable horizontal overflow */
+  scrollbar-width: thin; /* For Firefox */
+}
+
+.overflow-x-auto::-webkit-scrollbar {
+  height: 8px; /* Height of the scrollbar */
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Rounded corners for the scrollbar thumb */
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the scrollbar track */
+}
